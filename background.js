@@ -1,5 +1,4 @@
 var cleanupInterval = 1;
-var cleanupAfter = 60 * 1000; // clean up tabs after an hour
 // tabs is a map id -> last accessed 
 var tabs = {}
 
@@ -17,14 +16,26 @@ var months = [ "January",
   "December"
   ];
 
+function maybeCleanup() {
+  chrome.storage.sync.get({
+    repeating: false
+  }, function (opts) {
+    if (opts.repeating) cleanup();
+  });
+}
+
 function cleanup () {
   var now = Date.now();
-  getOrCreateBookmarks(now, function (parent) {
-    Object.keys(tabs).forEach(function (tab) {
-      accessed = tabs[tab];
-      if (now - accessed > cleanupAfter) {
-        cleanupTab(parseInt(tab), parent);
-      }
+  chrome.storage.sync.get({
+    cleanupAfter: "60"
+  }, function (opts) {
+    getOrCreateBookmarks(now, function (parent) {
+      Object.keys(tabs).forEach(function (tab) {
+        accessed = tabs[tab];
+        if (now - accessed > parseInt(opts.cleanupAfter)*1000) {
+          cleanupTab(parseInt(tab), parent);
+        }
+      });
     });
   });
 }
@@ -79,6 +90,7 @@ function getOrCreateHourBookmark(now, parent, cb) {
 
 function cleanupTab (tab, parentBookmark) {
   chrome.tabs.get(tab, function (tab) {
+    //TODO: ignore pinned tabs
     if (!tab) {
       tabs.delete(tab);
       return;
@@ -112,6 +124,6 @@ chrome.tabs.onActivated.addListener(function (info) {
 
 chrome.alarms.create("cleanup", { delayInMinutes: cleanupInterval, periodInMinutes: cleanupInterval });
 
-//chrome.alarms.onAlarm.addListener(cleanup);
+chrome.alarms.onAlarm.addListener(maybeCleanup);
 
 chrome.browserAction.onClicked.addListener(cleanup);

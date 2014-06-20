@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>Garbage Collector Options</title></head>
+<body>
+
+When should tabs be garbage collected?
+<select id="cleanupAfter">
+  <option value="30">After 30 minutes</option>
+  <option value="60">After 1 hour</option>
+  <option value="120">After 2 hours</option>
+</select>
+<p>
+<label>
+  <input type="checkbox" id="repeating">
+  Garbage collect tabs automatically after the specified interval
+</label>
+
+<p>
+<button id="save">Save</button>
+<div id="status"></div>
+
+<script src="options.js"></script>
+</body>
+</html>
