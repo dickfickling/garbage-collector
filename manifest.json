@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+
+  "name": "Garbage Collector",
+  "description": "Bookmark and then close tabs after they've been left inactive for too long",
+  "version": "0.0.1",
+
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "alarms"
+  ],
+  "browser_action": {
+    "default_icon": "icon128.png"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "background": {
+    "scripts" : ["background.js"]
+  }
+}
