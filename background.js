@@ -32,7 +32,7 @@ function cleanup () {
     getOrCreateBookmarks(now, function (parent) {
       Object.keys(tabs).forEach(function (tab) {
         accessed = tabs[tab];
-        if (now - accessed > parseInt(opts.cleanupAfter)*1000) {
+        if (now - accessed > parseInt(opts.cleanupAfter)*60*1000) {
           cleanupTab(parseInt(tab), parent);
         }
       });
