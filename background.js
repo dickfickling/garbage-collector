@@ -90,9 +90,11 @@ function getOrCreateHourBookmark(now, parent, cb) {
 
 function cleanupTab (tab, parentBookmark) {
   chrome.tabs.get(tab, function (tab) {
-    //TODO: ignore pinned tabs
     if (!tab) {
       tabs.delete(tab);
+      return;
+    }
+    if (tab.pinned || tab.highlighted) {
       return;
     }
     var bookmark = {
