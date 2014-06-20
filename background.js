@@ -116,10 +116,6 @@ function tabTouched (tab) {
   tabs[tab] = Date.now();
 }
 
-chrome.tabs.onCreated.addListener(function (tab) {
-  tabTouched(tab.id);
-});
-
 chrome.tabs.onActivated.addListener(function (info) {
   tabTouched(info.tabId);
 });
