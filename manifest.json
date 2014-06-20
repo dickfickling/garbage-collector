@@ -20,7 +20,7 @@
     "128": "icon-disabled-128.png"
   },
   "background": {
-    "scripts" : ["background.js"]
+    "scripts" : ["scripts/moment.min.js", "scripts/background.js"]
   },
   "options_page": "options.html"
 }

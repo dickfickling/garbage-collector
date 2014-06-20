@@ -1,20 +1,6 @@
 var cleanupInterval = 1;
-// tabs is a map id -> last accessed 
+// tabs is a map id -> last accessed
 var tabs = {}
-
-var months = [ "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
-  ];
 
 function maybeCleanup() {
   chrome.storage.sync.get({
@@ -32,7 +18,7 @@ function cleanup () {
     getOrCreateBookmarks(now, function (parent) {
       Object.keys(tabs).forEach(function (tab) {
         accessed = tabs[tab];
-        if (now - accessed > parseInt(opts.cleanupAfter)*60*1000) {
+        if (now - accessed > parseInt(opts.cleanupAfter) * 60 * 1000) {
           cleanupTab(parseInt(tab), parent);
         }
       });
@@ -54,21 +40,7 @@ function getOrCreateBookmarks (now, cb) {
 }
 
 function title (time) {
-  var t = new Date(time);
-  var hour = t.getHours();
-  var suffix = hour < 12 ? 'am' : 'pm';
-  if (hour == 0) {
-    hour = 12;
-  } else if (hour > 12) {
-    hour -= 12;
-  }
-
-  var d = t.getDate();
-  var m = months[t.getMonth()];
-  var y = t.getFullYear();
-  var dateStr = d + " " + m + " " + y;
-
-  return "Garbage Collected for " + dateStr + ", " + hour + suffix;
+  return "Garbage Collected for " + moment(time).format('D MMMM YYYY, ha');
 }
 
 function getOrCreateHourBookmark(now, parent, cb) {
